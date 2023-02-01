@@ -1,0 +1,6 @@
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/Application.java
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/config/infra/ResponseConfiguration.java
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/config/MyFunction.java
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/config/fn/ServerConfiguration.java
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/config/client/ClientConfiguration.java
+/home/farhad/apps/my-examples/si-cloudstream-samples/sscs-request-reply/src/main/java/com/farhad/example/sscs/requestreply/controller/ClientController.java
