@@ -18,6 +18,8 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import com.farhad.example.sscs.requestreply.config.MyFunction;
+import reactor.core.publisher.Flux;
+
 
 @Configuration
 @Slf4j
@@ -26,17 +28,18 @@ public class ClientConfiguration {
 
     @Bean
     @DependsOn("kafkaOutbound")
-    public Function<Message<String>, Message<String>> convertSendAndReceive(Function<Message<String>, Message<String>> sendToKafkaFunction) {
-        return message -> {
-            Message<String> msg = MessageBuilder.withPayload(message.getPayload())
-                    .copyHeaders(message.getHeaders())
-                    .setHeaderIfAbsent(KafkaHeaders.REPLY_TOPIC, "reply-topic")
-                    .setHeaderIfAbsent(KafkaHeaders.TOPIC, "request-reply")
-                    .build();
+    public Function<Flux<Message<String>>, Flux<Message<String>>> convertSendAndReceive(Function<Flux<Message<String>>, Flux<Message<String>>> sendToKafkaFunction) {
 
-            log.info("Message: {} Send  To KafkatFunction",msg);        
-            return sendToKafkaFunction.apply(msg);
-        };
+        return  flux -> flux
+                        .map(message ->  {
+                            return    MessageBuilder.withPayload(message.getPayload())
+                                                        .copyHeaders(message.getHeaders())
+                                                        .setHeaderIfAbsent(KafkaHeaders.REPLY_TOPIC, "reply-topic")
+                                                        .setHeaderIfAbsent(KafkaHeaders.TOPIC, "request-reply")
+                                                        .build();
+                            })
+                            .flatMap(t ->  sendToKafkaFunction.apply(flux));
+                            
     }
 
     @Bean

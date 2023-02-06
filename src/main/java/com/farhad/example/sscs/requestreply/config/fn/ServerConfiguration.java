@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
+import reactor.core.publisher.Flux;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,21 +17,22 @@ public class ServerConfiguration {
     
 
     @Bean
-    public Function<String, String> uppercase() {
-        return s ->  {
-            log.info("uppercase-Received: {} ",s);
-            return s.toUpperCase();
-        };
+    public Function<Flux<String>, Flux<String>> uppercase() {
+        return flux ->  
+            // log.info("uppercase-Received: {} ",s);
+                flux
+                    .log()
+                    .map(s -> s.toUpperCase()); 
     }
 
     @Bean
-    public Consumer<Message<String>> respond(MessageHandler kafkaMessageHandler) {
+    public Consumer<Flux<Message<String>>> respond(MessageHandler kafkaMessageHandler) {
 
-        return m -> {
-            log.info("respond-Received: {}" ,m);
-            kafkaMessageHandler.handleMessage(m);
-        };
-        // return kafkaMessageHandler::handleMessage;
+        return flux -> 
+                    flux
+                        .log()
+                       .subscribe(kafkaMessageHandler::handleMessage) 
+                       ;
     }
 
 

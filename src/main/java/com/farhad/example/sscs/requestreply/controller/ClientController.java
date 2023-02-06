@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 import java.util.function.Function;
 
@@ -18,17 +19,20 @@ import java.util.function.Function;
 public class ClientController {
 
     @Autowired
-    private Function<String, String> convertSendAndReceive;
+    private Function<Flux<String>, Flux<String>> convertSendAndReceive;
 
     @PostMapping(value = "/sendToKafka", consumes = MediaType.TEXT_PLAIN_VALUE)
-    ResponseEntity<String> sendToKafka(@RequestBody String message) {
-        try {
-            String response = convertSendAndReceive.apply(message);
-            log.info("response : " + response);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    Flux<String> sendToKafka(@RequestBody Flux<String> message) {
+
+        return  convertSendAndReceive.apply(message);
+
+        // try {
+        //     String response = convertSendAndReceive.apply(message);
+        //     log.info("response : " + response);
+        //     return new ResponseEntity<>(response, HttpStatus.OK);
+        // } catch (Exception exception) {
+        //     log.error(exception.getMessage());
+        //     return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        // }
     }
 }
