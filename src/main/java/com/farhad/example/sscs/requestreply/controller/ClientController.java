@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +21,9 @@ public class ClientController {
     private Function<Flux<String>, Flux<String>> convertSendAndReceive;
 
     @PostMapping(value = "/sendToKafka", consumes = MediaType.TEXT_PLAIN_VALUE)
-    Flux<String> sendToKafka(@RequestBody Flux<String> message) {
+    Flux<String> sendToKafka(@RequestBody String message) {
 
-        return  convertSendAndReceive.apply(message);
+        return  convertSendAndReceive.apply(Flux.just(message));
 
         // try {
         //     String response = convertSendAndReceive.apply(message);
