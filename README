@@ -25,7 +25,7 @@
 #   ************************************************* 
 #                          
 #           /api/sendToKafka                call apply       (Function)                  (Gateeay)            
-#    client ---------------->  web handler -----------> convertSendAndReceive ------> requestReplyGateway (Outbound Gateway)---------> 
+#    client ---------------->  web handler -----------> sendAndReceiveService ------> requestReplyGateway (Outbound Gateway)---------> 
 #
 #                                                                
 #                                                                             
