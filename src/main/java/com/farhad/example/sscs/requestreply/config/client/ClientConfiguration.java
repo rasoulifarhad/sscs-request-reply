@@ -17,7 +17,7 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import com.farhad.example.sscs.requestreply.config.MyFunction;
+import com.farhad.example.sscs.requestreply.config.RequestReplyFunction;
 import reactor.core.publisher.Flux;
 
 
@@ -60,7 +60,7 @@ public class ClientConfiguration {
 
     @Bean("kafkaOutbound")
     public IntegrationFlow kafkaOutbound(ReplyingKafkaTemplate<String, String ,String> replyingKafkaTemplate) {
-        return IntegrationFlows.from(MyFunction.class, gateway -> gateway.beanName("sendToKafkaFunction"))
+        return IntegrationFlows.from(RequestReplyFunction.class, gateway -> gateway.beanName("sendToKafkaFunction"))
                 .log()
                 // .enrichHeaders(HeaderEnricherSpec::headerChannelsToString)
                 .enrichHeaders(headerEnricher -> headerEnricher.headerChannelsToString())

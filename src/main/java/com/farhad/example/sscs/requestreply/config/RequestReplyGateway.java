@@ -4,6 +4,6 @@ import reactor.core.publisher.Flux;
 import java.util.function.Function;
 import org.springframework.messaging.Message;
 
-public interface MyFunction extends Function<Flux<Message<String>>, Flux<Message<String>>>{
+public interface RequestReplyFunction extends Function<Flux<Message<String>>, Flux<Message<String>>>{
     
 }
