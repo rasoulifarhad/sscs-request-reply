@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
@@ -15,12 +16,12 @@ import java.util.function.Function;
 public class ClientController {
 
     @Autowired
-    private Function<Flux<String>, Flux<String>> convertSendAndReceive;
+    private Function<Flux<String>, Flux<String>> sendAndReceiveService;
 
     @PostMapping(value = "/sendToKafka", consumes = MediaType.TEXT_PLAIN_VALUE)
-    Flux<String> sendToKafka(@RequestBody String message) {
+    Mono<String> sendToKafka(@RequestBody String message) {
 
-        return  convertSendAndReceive.apply(Flux.just(message));
+        return  sendAndReceiveService.apply(Flux.just(message)).next();
 
     }
 }

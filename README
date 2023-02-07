@@ -54,6 +54,15 @@
 #        │  Publisher  │              ***********************************************                     │  Consumer  │
 #        │  (Client)   │                                                                                  │  (Client)  │
 #        └─────────────┘                                                                                  └────────────┘
-
-
+#
+## Tips:
+#   
+#  How to convert Mono<List<String>> into Flux<String>     
+#   
+#      myMono.flatMapMany(Flux::fromIterable)
+#      Flux.from(myMono)
+#
+#  Convert Flux to Mono
+#
+#   myFlux.next()
 	
