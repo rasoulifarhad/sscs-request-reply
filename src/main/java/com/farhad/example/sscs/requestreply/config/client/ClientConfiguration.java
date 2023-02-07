@@ -28,7 +28,7 @@ public class ClientConfiguration {
 
     @Bean
     @DependsOn("kafkaOutbound")
-    public Function<Flux<Message<String>>, Flux<Message<String>>> convertSendAndReceive(Function<Flux<Message<String>>, Flux<Message<String>>> requestReplyGateway) {
+    public Function<Flux<Message<String>>, Flux<Message<String>>> sendAndReceiveService(Function<Flux<Message<String>>, Flux<Message<String>>> requestReplyGateway) {
 
         return  flux -> flux
                         .map(message ->  {
