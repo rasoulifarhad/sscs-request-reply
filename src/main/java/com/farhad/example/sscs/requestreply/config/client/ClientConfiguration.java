@@ -17,7 +17,7 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import com.farhad.example.sscs.requestreply.config.RequestReplyFunction;
+import com.farhad.example.sscs.requestreply.config.RequestReplyGateway;
 import reactor.core.publisher.Flux;
 
 
@@ -28,7 +28,7 @@ public class ClientConfiguration {
 
     @Bean
     @DependsOn("kafkaOutbound")
-    public Function<Flux<Message<String>>, Flux<Message<String>>> convertSendAndReceive(Function<Flux<Message<String>>, Flux<Message<String>>> sendToKafkaFunction) {
+    public Function<Flux<Message<String>>, Flux<Message<String>>> convertSendAndReceive(Function<Flux<Message<String>>, Flux<Message<String>>> requestReplyGateway) {
 
         return  flux -> flux
                         .map(message ->  {
@@ -38,7 +38,7 @@ public class ClientConfiguration {
                                                         .setHeaderIfAbsent(KafkaHeaders.TOPIC, "request-reply")
                                                         .build();
                             })
-                            .flatMap(t ->  sendToKafkaFunction.apply(flux));
+                            .flatMap(t ->  requestReplyGateway.apply(flux));
                             
     }
 
@@ -60,7 +60,7 @@ public class ClientConfiguration {
 
     @Bean("kafkaOutbound")
     public IntegrationFlow kafkaOutbound(ReplyingKafkaTemplate<String, String ,String> replyingKafkaTemplate) {
-        return IntegrationFlows.from(RequestReplyFunction.class, gateway -> gateway.beanName("sendToKafkaFunction"))
+        return IntegrationFlows.from(RequestReplyGateway.class, gateway -> gateway.beanName("requestReplyGateway"))
                 .log()
                 // .enrichHeaders(HeaderEnricherSpec::headerChannelsToString)
                 .enrichHeaders(headerEnricher -> headerEnricher.headerChannelsToString())
