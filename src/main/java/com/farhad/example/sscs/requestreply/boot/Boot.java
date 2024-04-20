@@ -32,7 +32,7 @@ public class Boot {
             bodyValues.add("another-key", "another-value");
             Flux<String> res = client
                             .post()
-                            .uri("/api/sendToKafka")
+                            .uri("/api/uppercase")
                             .body(Flux.just("Hello","by"),String.class)
                             .retrieve()
                             .bodyToFlux(String.class);

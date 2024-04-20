@@ -8,9 +8,9 @@
 #
 #     Go to  `sscs-request-reply` folder and run `./mvnw spring-boot:run`
 #
-## 3. Test with curl
+## 3. Test with curl - (uppercase value in body of request)  
 #
-#     curl -s -X POST -H 'Content-Type: text/plain' -d 'test' -w "\n"  http://localhost:8080/api/sendToKafka
+#     curl -s -X POST -H 'Content-Type: text/plain' -d 'test' -w "\n"  http://localhost:8080/api/uppercase
 #
 #     OR
 #
@@ -18,7 +18,19 @@
 #          --request POST \
 #          --data 'test' \
 #          -w "\n" \
-#           http://localhost:8080/api/sendToKafka
+#           http://localhost:8080/api/uppercase
+#
+## 4. Test with curl - (uppercase value in path of request)  
+#
+#     curl -s -X POST -H 'Content-Type: text/plain' -w "\n"  http://localhost:8080/api/uppercase/test
+#
+#     OR
+#
+#     curl --header "Content-Type: text/plain" \
+#          --request POST \
+#          -w "\n" \
+#           http://localhost:8080/api/uppercase/test
+#
 #
 #   *************************************************
 #   *                     DOCs                      *
